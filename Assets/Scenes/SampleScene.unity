@@ -1992,7 +1992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe3d49203a22a048a36777e690b27c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicle: {fileID: 3668757000397326525, guid: 56507c85e47d1c24dbaf4ffafe6f0752, type: 3}
+  vehicle: {fileID: 5172954206675461943, guid: 37fea968be14bee42bb9f80816d727dd, type: 3}
   followCamera: {fileID: 1072086622}
   otherCamera: {fileID: 963194225}
 --- !u!4 &1650143590

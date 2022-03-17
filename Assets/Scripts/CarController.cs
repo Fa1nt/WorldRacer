@@ -115,12 +115,6 @@ public class CarController : MonoBehaviour
 
     private void Motor()
     {
-        //rearLeftWheelCollider.motorTorque = verticalInput * (motorForce + (rearLeftWheelCollider.rpm / 1000));
-        //rearRightWheelCollider.motorTorque = verticalInput * (motorForce + (rearRightWheelCollider.rpm / 1000));
-        // nlogn function or smth here?
-        //rearLeftWheelCollider.motorTorque = verticalInput * (Mathf.Log10(motorForce));
-        //rearRightWheelCollider.motorTorque = verticalInput * (Mathf.Log10(motorForce));
-
         if (verticalInput < 0)
             gear = 1;
 

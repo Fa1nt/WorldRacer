@@ -18,9 +18,6 @@ public class CheckpointController : MonoBehaviour
         transform.position = buildings[rand].transform.position;
         transform.rotation = buildings[rand].transform.rotation;
         transform.Translate(Vector3.forward * (buildings[rand].transform.localScale.z / 2f + 10f));
-        //Vector3 pos = buildings[rand].transform.position;
-        //Quaternion rot = buildings[rand].transform.rotation;
-        //pos.z += buildings[rand].transform.localScale.z;
         Instantiate(marker, transform.position, transform.rotation);
     }
 }

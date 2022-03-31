@@ -1488,6 +1488,7 @@ GameObject:
   - component: {fileID: 1072086625}
   - component: {fileID: 1072086624}
   - component: {fileID: 1072086623}
+  - component: {fileID: 1072086626}
   m_Layer: 0
   m_Name: Car Camera
   m_TagString: MainCamera
@@ -1567,6 +1568,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!81 &1072086626
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1072086622}
+  m_Enabled: 1
 --- !u!1 &1183221703
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,17 +20,21 @@ public class CamController : MonoBehaviour
 
     private void LateUpdate()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        bool gamePaused = GameObject.Find("Canvas").gameObject.transform.Find("PausePanel").gameObject.activeInHierarchy;
+        if (!gamePaused)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        rotationX += mouseY;
-        rotationY += mouseX;
+            rotationX += mouseY;
+            rotationY += mouseX;
 
-        rotationX = Mathf.Clamp(rotationX, -30, 90);
+            rotationX = Mathf.Clamp(rotationX, -10, 90);
 
-        transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
+            transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
 
-        transform.position = target.TransformPoint(offset) - transform.forward * distanceFromTarget;
+            transform.position = target.TransformPoint(offset) - transform.forward * distanceFromTarget;
+        }
     }
 
     /*private void FixedUpdate()

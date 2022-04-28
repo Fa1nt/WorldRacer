@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class CheckpointController : MonoBehaviour
 {
+    AudioSource audioSource;
     public GameObject marker;
     public GameObject mapPoint;
     private GameObject pointDot;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public void CreateCheckpoint()
     {
         if (GameObject.FindGameObjectWithTag("Checkpoint") != null)
         {
+            audioSource.Play();
             Destroy(GameObject.FindGameObjectWithTag("Checkpoint"));
             Destroy(pointDot);
         }

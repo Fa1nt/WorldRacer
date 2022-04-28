@@ -10,6 +10,8 @@ public class PauseScript : MonoBehaviour
     void Start()
     {
         pausePanel.SetActive(false);
+        AudioListener.pause = false;
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -35,6 +37,7 @@ public class PauseScript : MonoBehaviour
         pausePanel.SetActive(true);
         //Disable scripts that still work while timescale is set to 0
         AudioListener.pause = true;
+        Cursor.visible = true;
     }
     private void ResumeGame()
     {
@@ -42,5 +45,6 @@ public class PauseScript : MonoBehaviour
         pausePanel.SetActive(false);
         //enable the scripts again
         AudioListener.pause = false;
+        Cursor.visible = false;
     }
 }

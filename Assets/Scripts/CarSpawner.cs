@@ -34,5 +34,7 @@ public class CarSpawner : MonoBehaviour
         uiElement6.SetActive(false);
         pauseScript.SetActive(true);
         miniMap.SetActive(true);
+
+        Cursor.visible = false;
     }
 }

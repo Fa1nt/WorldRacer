@@ -13,9 +13,6 @@ public class CarController : MonoBehaviour
     public int gear = 1;
     private bool shiftUp;
     private bool shiftDown;
-    public int nitro = 500;
-    private bool useNitro;
-    private int nitroBoost = 1;
     private float force = 1f;
     private float realForce;
     public int player = 1;
@@ -25,7 +22,11 @@ public class CarController : MonoBehaviour
     private float slipLat;
     private float slipLong;
 
+    AudioSource[] sounds;
     AudioSource audioSource;
+    AudioSource audioSource2;
+    public bool skidding = false;
+    public float falseTime = 0;
 
     [SerializeField] private float motorForce;
     [SerializeField] private float breakForce;
@@ -50,7 +51,9 @@ public class CarController : MonoBehaviour
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        sounds = GetComponents<AudioSource>();
+        audioSource = sounds[0];
+        audioSource2 = sounds[1];
     }
 
     private void FixedUpdate()
@@ -60,7 +63,6 @@ public class CarController : MonoBehaviour
         Steering();
         UpdateWheels();
         UpdateGear();
-        UpdateNitro();
         audioSource.pitch = minPitch;
         UpdateAudio();
         UpdateSmoke();
@@ -78,9 +80,6 @@ public class CarController : MonoBehaviour
             horizontalInput = Input.GetAxis("Horizontal");
             verticalInput = Input.GetAxis("Vertical");
             isBreaking = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Joystick2Button5);
-            shiftUp = Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick2Button3);
-            shiftDown = Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick2Button2);
-            useNitro = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick2Button4);
         }
     }
 
@@ -90,88 +89,108 @@ public class CarController : MonoBehaviour
         if (rearLeftWheelData.sidewaysSlip > 0.5)
         {
             rearLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (rearLeftWheelData.sidewaysSlip < -0.5)
         {
             rearLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (rearLeftWheelData.forwardSlip > 0.5)
         {
             rearLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (rearLeftWheelData.forwardSlip < -0.5)
         {
             rearLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else
         {
             rearLeftSmoke.GetComponent<ParticleSystem>().Stop();
+            skidding = false;
         }
 
         rearRightWheelCollider.GetGroundHit(out WheelHit rearRightWheelData);
         if (rearRightWheelData.sidewaysSlip > 0.5)
         {
             rearRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (rearRightWheelData.sidewaysSlip < -0.5)
         {
             rearRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (rearRightWheelData.forwardSlip > 0.5)
         {
             rearRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (rearRightWheelData.forwardSlip < -0.5)
         {
             rearRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else
         {
             rearRightSmoke.GetComponent<ParticleSystem>().Stop();
+            skidding = false;
         }
 
         frontLeftWheelCollider.GetGroundHit(out WheelHit frontLeftWheelData);
         if (frontLeftWheelData.sidewaysSlip > 0.5)
         {
             frontLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (frontLeftWheelData.sidewaysSlip < -0.5)
         {
             frontLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (frontLeftWheelData.forwardSlip > 0.5)
         {
             frontLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (frontLeftWheelData.forwardSlip < -0.5)
         {
             frontLeftSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else
         {
             frontLeftSmoke.GetComponent<ParticleSystem>().Stop();
+            skidding = false;
         }
 
         frontRightWheelCollider.GetGroundHit(out WheelHit frontRightWheelData);
         if (frontRightWheelData.sidewaysSlip > 0.5)
         {
             frontRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (frontRightWheelData.sidewaysSlip < -0.5)
         {
             frontRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (frontRightWheelData.forwardSlip > 0.5)
         {
             frontRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else if (frontRightWheelData.forwardSlip < -0.5)
         {
             frontRightSmoke.GetComponent<ParticleSystem>().Play();
+            skidding = true;
         }
         else
         {
             frontRightSmoke.GetComponent<ParticleSystem>().Stop();
+            skidding = false;
         }
     }
 
@@ -180,7 +199,7 @@ public class CarController : MonoBehaviour
         //audioSource.pitch = minPitch + 1.5f * (rearLeftWheelCollider.rpm/5000);
         if (gear == 1)
         {
-            audioSource.pitch = minPitch + 1.5f * (rearLeftWheelCollider.rpm / 500);
+            audioSource.pitch = minPitch + 1.5f * (rearLeftWheelCollider.rpm / 250);
         }
         else if (rearLeftWheelCollider.rpm < 5)
         {
@@ -188,7 +207,7 @@ public class CarController : MonoBehaviour
         }
         else if (gear == 2)
         {
-            audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 200) / 1200);
+            audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 100) / 1200);
         }
         else if (gear == 3)
         {
@@ -206,6 +225,23 @@ public class CarController : MonoBehaviour
         {
             audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 600) / 4400);
         }
+
+        if (skidding)
+        {
+            if (!audioSource2.isPlaying)
+                audioSource2.Play();
+        }
+        else
+        {
+            if (falseTime == 0)
+                falseTime = Time.time;
+            if ((Time.time - falseTime) >= 0.5f)
+            {
+                audioSource2.Stop();
+                falseTime = 0;
+                audioSource2.volume = 1;
+            }
+        }
     }
 
     private void UpdateGear()
@@ -219,52 +255,32 @@ public class CarController : MonoBehaviour
         if (gear == 1)
         {
             realForce = motorForce / 10;
-            audioSource.pitch = minPitch + 1.5f * (rearLeftWheelCollider.rpm / 500);
+            //audioSource.pitch = minPitch + 1.5f * (rearLeftWheelCollider.rpm / 500);
         }
         if (gear == 2)
         {
             realForce = motorForce / 10 + 600;
-            audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 200) / 1200);
+            //audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 200) / 1200);
         }
         if (gear == 3)
         {
             realForce = motorForce / 10 + 600 * 2;
-            audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 300) / 2000);
+            //audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 300) / 2000);
         }
         if (gear == 4)
         {
             realForce = motorForce / 10 + 600 * 3;
-            audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 400) / 2800);
+            //audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 400) / 2800);
         }
         if (gear == 5)
         {
             realForce = motorForce / 10 + 600 * 4;
-            audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 500) / 3600);
+            //audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 500) / 3600);
         }
         if (gear == 6)
         {
             realForce = motorForce / 10 + 600 * 5;
-            audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 600) / 4400);
-        }
-    }
-
-    private void UpdateNitro()
-    {
-        if (useNitro == true)
-        {
-            if (nitro > 0)
-            {
-                nitroBoost = 3;
-                nitro--;
-            }
-            else
-            {
-                nitroBoost = 1;
-            }
-        }
-        else
-        {
-            nitroBoost = 1;
+            //audioSource.pitch = minPitch + 1.5f * ((rearLeftWheelCollider.rpm - 600) / 4400);
         }
     }
 
@@ -276,8 +292,8 @@ public class CarController : MonoBehaviour
         if (verticalInput != 0) {
             if (rearLeftWheelCollider.motorTorque < realForce)
             {
-                rearLeftWheelCollider.motorTorque = verticalInput * (nitroBoost*gear*150 * Mathf.Log10(force));
-                rearRightWheelCollider.motorTorque = verticalInput * (nitroBoost*gear*150 * Mathf.Log10(force));
+                rearLeftWheelCollider.motorTorque = verticalInput * (gear*150 * Mathf.Log10(force));
+                rearRightWheelCollider.motorTorque = verticalInput * (gear*150 * Mathf.Log10(force));
                 force += 1;
             }
         }
@@ -296,32 +312,35 @@ public class CarController : MonoBehaviour
             rearLeftWheelCollider.motorTorque = 0f;
             rearRightWheelCollider.motorTorque = 0f;
         }
-        // rpm 0-500
+        // rpm 0-250
         if (gear == 1)
         {
-            if (rearLeftWheelCollider.rpm > 500)
+            if (rearLeftWheelCollider.rpm > 250)
             {
+                gear = 2;
                 rearLeftWheelCollider.motorTorque = rearLeftWheelCollider.motorTorque * (-1f);
                 rearRightWheelCollider.motorTorque = rearRightWheelCollider.motorTorque * (-1f);
             }
         }
-        // rpm 200-1400
+        // rpm 100-1400
         else if (gear == 2)
         {
             if (rearLeftWheelCollider.rpm > 1400)
             {
+                gear = 3;
                 rearLeftWheelCollider.motorTorque = rearLeftWheelCollider.motorTorque * (-1f);
                 rearRightWheelCollider.motorTorque = rearRightWheelCollider.motorTorque * (-1f);
             }
-            else if (rearLeftWheelCollider.rpm < 200)
+            else if (rearLeftWheelCollider.rpm < 100)
             {
+                gear = 1;
                 rearLeftWheelCollider.motorTorque = 0f;
                 rearRightWheelCollider.motorTorque = 0f;
             }
             else if (rearLeftWheelCollider.rpm < 1100)
             {
-                rearLeftWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
-                rearRightWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
+                rearLeftWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
+                rearRightWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
             }
         }
         // rpm 300-2300
@@ -329,18 +348,20 @@ public class CarController : MonoBehaviour
         {
             if (rearLeftWheelCollider.rpm > 2300)
             {
+                gear = 4;
                 rearLeftWheelCollider.motorTorque = rearLeftWheelCollider.motorTorque * (-1f);
                 rearRightWheelCollider.motorTorque = rearRightWheelCollider.motorTorque * (-1f);
             }
             else if (rearLeftWheelCollider.rpm < 300)
             {
+                gear = 2;
                 rearLeftWheelCollider.motorTorque = 0f;
                 rearRightWheelCollider.motorTorque = 0f;
             }
             else if (rearLeftWheelCollider.rpm < 2000)
             {
-                rearLeftWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
-                rearRightWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
+                rearLeftWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
+                rearRightWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
             }
         }
         // rpm 400-3200
@@ -348,18 +369,20 @@ public class CarController : MonoBehaviour
         {
             if (rearLeftWheelCollider.rpm > 3200)
             {
+                gear = 5;
                 rearLeftWheelCollider.motorTorque = rearLeftWheelCollider.motorTorque * (-1f);
                 rearRightWheelCollider.motorTorque = rearRightWheelCollider.motorTorque * (-1f);
             }
             else if (rearLeftWheelCollider.rpm < 400)
             {
+                gear = 3;
                 rearLeftWheelCollider.motorTorque = 0f;
                 rearRightWheelCollider.motorTorque = 0f;
             }
             else if (rearLeftWheelCollider.rpm < 2900)
             {
-                rearLeftWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
-                rearRightWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
+                rearLeftWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
+                rearRightWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
             }
         }
         // rpm 500-4100
@@ -367,18 +390,20 @@ public class CarController : MonoBehaviour
         {
             if (rearLeftWheelCollider.rpm > 4100)
             {
+                gear = 6;
                 rearLeftWheelCollider.motorTorque = rearLeftWheelCollider.motorTorque * (-1f);
                 rearRightWheelCollider.motorTorque = rearRightWheelCollider.motorTorque * (-1f);
             }
             else if (rearLeftWheelCollider.rpm < 500)
             {
+                gear = 4;
                 rearLeftWheelCollider.motorTorque = 0f;
                 rearRightWheelCollider.motorTorque = 0f;
             }
             else if (rearLeftWheelCollider.rpm < 3800)
             {
-                rearLeftWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
-                rearRightWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
+                rearLeftWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
+                rearRightWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
             }
         }
         // rpm 600-5000
@@ -391,13 +416,14 @@ public class CarController : MonoBehaviour
             }
             else if (rearLeftWheelCollider.rpm < 600)
             {
+                gear = 5;
                 rearLeftWheelCollider.motorTorque = 0f;
                 rearRightWheelCollider.motorTorque = 0f;
             }
             else if (rearLeftWheelCollider.rpm < 4700)
             {
-                rearLeftWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
-                rearRightWheelCollider.motorTorque = verticalInput * (nitroBoost * gear * 90 * Mathf.Log10(force));
+                rearLeftWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
+                rearRightWheelCollider.motorTorque = verticalInput * (gear * 90 * Mathf.Log10(force));
             }
         }
     }

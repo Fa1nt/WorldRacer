@@ -8,7 +8,9 @@ public class RespawnCheckpoint : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
+            float remainingTime = GameObject.Find("TimerText").GetComponent<TimerScript>().timeRemaining;
             GameObject.Find("CheckpointScript").GetComponent<CheckpointController>().CreateCheckpoint();
+            GameObject.Find("ScoreController").GetComponent<ScoreScript>().AddScore(remainingTime);
         }
     }
 }

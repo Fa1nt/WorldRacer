@@ -8,6 +8,7 @@ public class CheckpointController : MonoBehaviour
     public GameObject marker;
     public GameObject mapPoint;
     private GameObject pointDot;
+    private GameObject checkPoint;
     public GameObject timer;
 
     private void Start()
@@ -30,13 +31,17 @@ public class CheckpointController : MonoBehaviour
         transform.rotation = buildings[rand].transform.rotation;
         transform.Translate(Vector3.forward * (buildings[rand].transform.localScale.z / 2f + 10f));
         transform.Translate(Vector3.down * (buildings[rand].transform.position.y));
-        Instantiate(marker, transform.position, transform.rotation);
+        checkPoint = Instantiate(marker, transform.position, transform.rotation);
 
         pointDot = Instantiate(mapPoint);
         pointDot.transform.position = transform.position;
 
+        GameObject car = GameObject.FindGameObjectWithTag("Player");
+        float dist = Vector3.Distance(checkPoint.transform.position, car.transform.position);
+        Debug.Log(string.Format("Distance between {0} and {1} is: {2}", checkPoint, car, dist));
+
         timer.GetComponent<TimerScript>().timerIsRunning = true;
-        timer.GetComponent<TimerScript>().timeRemaining = 60;
+        timer.GetComponent<TimerScript>().timeRemaining = dist/10 + 5;
         // check the distance between the player and the checkpoint and give a timeRemaining based on that
     }
 }

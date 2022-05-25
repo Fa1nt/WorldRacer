@@ -43,11 +43,11 @@ public class MinimapScript : MonoBehaviour
             GameObject car = GameObject.FindGameObjectWithTag("Player");
             float dist = Vector3.Distance(checkPoint.transform.position, car.transform.position);
             //Debug.Log(string.Format("Distance between {0} and {1} is: {2}", checkPoint, car, dist));
-            if (dist > 270f)
+            if (dist > 245f)
             {
                 mapPoint.transform.position = car.transform.position;
                 mapPoint.transform.LookAt(checkPoint.transform);
-                mapPoint.transform.Translate(Vector3.forward * 270f);
+                mapPoint.transform.Translate(Vector3.forward * 245f);
             }
             else
             {

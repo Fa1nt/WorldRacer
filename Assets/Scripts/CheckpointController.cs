@@ -10,6 +10,7 @@ public class CheckpointController : MonoBehaviour
     private GameObject pointDot;
     private GameObject checkPoint;
     public GameObject timer;
+    public GameObject score;
 
     private void Start()
     {
@@ -38,10 +39,11 @@ public class CheckpointController : MonoBehaviour
 
         GameObject car = GameObject.FindGameObjectWithTag("Player");
         float dist = Vector3.Distance(checkPoint.transform.position, car.transform.position);
-        Debug.Log(string.Format("Distance between {0} and {1} is: {2}", checkPoint, car, dist));
+        //Debug.Log(string.Format("Distance between {0} and {1} is: {2}", checkPoint, car, dist));
 
         timer.GetComponent<TimerScript>().timerIsRunning = true;
         timer.GetComponent<TimerScript>().timeRemaining = dist/10 + 5;
         // check the distance between the player and the checkpoint and give a timeRemaining based on that
+        score.GetComponent<ScoreScript>().reward = (int) (dist / 10 / 4);
     }
 }

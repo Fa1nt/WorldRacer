@@ -217,7 +217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &47352510
 RectTransform:
   m_ObjectHideFlags: 0
@@ -303,7 +303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &63307543
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1038,6 +1038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 63307544}
   timer: {fileID: 1208526678}
+  reward: 0
 --- !u!4 &581124237
 Transform:
   m_ObjectHideFlags: 0
@@ -2188,6 +2189,7 @@ MonoBehaviour:
   mapPoint: {fileID: 1959020978170490837, guid: dc29eb8ff275c4a4ca4c8c924662d11a,
     type: 3}
   timer: {fileID: 1208526678}
+  score: {fileID: 581124235}
 --- !u!4 &1003223230
 Transform:
   m_ObjectHideFlags: 0
@@ -2494,7 +2496,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1208526679
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3412,6 +3414,8 @@ MonoBehaviour:
   uiElement6: {fileID: 1515629154}
   pauseScript: {fileID: 934471955}
   miniMap: {fileID: 47352509}
+  score: {fileID: 63307542}
+  timer: {fileID: 1208526678}
 --- !u!4 &1650143590
 Transform:
   m_ObjectHideFlags: 0

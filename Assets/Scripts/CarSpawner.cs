@@ -16,6 +16,8 @@ public class CarSpawner : MonoBehaviour
     public GameObject uiElement6;
     public GameObject pauseScript;
     public GameObject miniMap;
+    public GameObject score;
+    public GameObject timer;
 
     public void SpawnVehicle()
     {
@@ -34,6 +36,8 @@ public class CarSpawner : MonoBehaviour
         uiElement6.SetActive(false);
         pauseScript.SetActive(true);
         miniMap.SetActive(true);
+        score.SetActive(true);
+        timer.SetActive(true);
 
         Cursor.visible = false;
     }

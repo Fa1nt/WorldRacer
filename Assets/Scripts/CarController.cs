@@ -278,17 +278,19 @@ public class CarController : MonoBehaviour
                 rearRightWheelCollider.motorTorque = rearRightWheelCollider.motorTorque * (-1f);
             }
         }
-        else if (verticalInput < 0 && rearLeftWheelCollider.rpm > 100)
+        // breaking with S
+        else if (verticalInput < 0 && rearLeftWheelCollider.rpm > 50)
         {
             rearLeftWheelCollider.motorTorque = rearLeftWheelCollider.motorTorque * (-1f);
             rearRightWheelCollider.motorTorque = rearRightWheelCollider.motorTorque * (-1f);
+            currentbreakForce = 1500f;
         }
-        else if (verticalInput == 0 && rearLeftWheelCollider.rpm > 10)
+        else if (verticalInput == 0 && rearLeftWheelCollider.rpm > 20)
         {
             rearLeftWheelCollider.motorTorque = 0f;
             rearRightWheelCollider.motorTorque = 0f;
         }
-        else if (verticalInput == 0 && rearLeftWheelCollider.rpm < 10)
+        else if (verticalInput == 0 && rearLeftWheelCollider.rpm < 20)
         {
             isBreaking = true;
         }
